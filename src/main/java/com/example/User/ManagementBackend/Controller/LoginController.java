@@ -1,7 +1,7 @@
 package com.example.User.ManagementBackend.Controller;
 
 import com.example.User.ManagementBackend.Dto.UserDto;
-import com.example.User.ManagementBackend.Service.ServiceImp.UserService;
+import com.example.User.ManagementBackend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

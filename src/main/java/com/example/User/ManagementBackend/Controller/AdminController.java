@@ -2,12 +2,14 @@ package com.example.User.ManagementBackend.Controller;
 
 import com.example.User.ManagementBackend.Dto.UserDto;
 import com.example.User.ManagementBackend.Entity.User;
-import com.example.User.ManagementBackend.Service.ServiceImp.UserService;
+import com.example.User.ManagementBackend.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,7 @@ public class AdminController {
 
     //    Add user
     @PostMapping("/add-user")
-    public ResponseEntity<?> addUser(@Valid @RequestBody UserDto userDto ,BindingResult result) {
+    public ResponseEntity<?> addUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
 
         if (result.hasErrors()) {
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -49,6 +51,11 @@ public class AdminController {
     @DeleteMapping("/delete-user")
     public ResponseEntity<?> removeUser(@Valid @RequestParam("email") String email) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("Auth" + authentication);
+
+
         userService.removeUser(email);
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
@@ -59,8 +66,8 @@ public class AdminController {
 
         User user = userService.findByEmail(userDto.getEmail());
 
-        log.info("error status"+result.hasErrors());
-        
+        log.info("error status" + result.hasErrors());
+
         if (user == null) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }

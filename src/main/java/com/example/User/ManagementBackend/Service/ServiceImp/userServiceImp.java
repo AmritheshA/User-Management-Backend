@@ -4,6 +4,7 @@ import com.example.User.ManagementBackend.Dto.UserDto;
 import com.example.User.ManagementBackend.Entity.Enum.Roles;
 import com.example.User.ManagementBackend.Entity.User;
 import com.example.User.ManagementBackend.Repository.UserRepo;
+import com.example.User.ManagementBackend.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,11 @@ public class userServiceImp implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepo.findByEmail(email);
+    }
+
+    @Override
+    public User findByUserName(String userName) {
+        return userRepo.findByUsername(userName);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.User.ManagementBackend.Service.ServiceImp;
+package com.example.User.ManagementBackend.Service;
 
 import com.example.User.ManagementBackend.Dto.UserDto;
 import com.example.User.ManagementBackend.Entity.User;
@@ -14,8 +14,11 @@ public interface UserService {
 
    User findByEmail(String email);
 
+   User findByUserName(String userName);
+
    void editUser(UserDto userDto, User user);
 
    boolean ifUserNameExist(String username);
+
 
 }
