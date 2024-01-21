@@ -14,8 +14,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
     private UserService userRepo;
-    @Autowired
-    private  PasswordEncoder passwordEncoder;
 
 
     @Override

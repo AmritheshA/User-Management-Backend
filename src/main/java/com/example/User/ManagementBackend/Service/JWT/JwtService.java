@@ -16,6 +16,8 @@ import java.util.List;
 
 @Service
 public class JwtService {
+
+    private final String jwtSecret = "ZmFrbGpka2Y7YWprZGZqYTtsZGZrYW";
     public String generateToken(Authentication authentication){
         String username = authentication.getName();
         Date currentDate = new Date();
@@ -29,19 +31,19 @@ public class JwtService {
                 .claim("role", roles.get(0))
                 .setIssuedAt(currentDate)
                 .setExpiration(expirationTime)
-                .signWith(SignatureAlgorithm.HS256,"ZmFrbGpka2Y7YWprZGZqYTtsZGZrYW")
+                .signWith(SignatureAlgorithm.HS256,jwtSecret)
                 .compact();
     }
     public String getUsernameFromToken(String token){
         Claims claims = Jwts.parser()
-                .setSigningKey("ZmFrbGpka2Y7YWprZGZqYTtsZGZrYW")
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
         return  claims.getSubject();
     }
     public boolean validateToken(String token){
         try {
-            Jwts.parser().setSigningKey("ZmFrbGpka2Y7YWprZGZqYTtsZGZrYW").parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         }
         catch (Exception e){
@@ -52,7 +54,7 @@ public class JwtService {
     public void expireToken(String token){
         Date currentDate = new Date();
         Claims claims = Jwts.parser()
-                .setSigningKey("ZmFrbGpka2Y7YWprZGZqYTtsZGZrYW")
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
         claims.setExpiration(new Date(currentDate.getTime()));
