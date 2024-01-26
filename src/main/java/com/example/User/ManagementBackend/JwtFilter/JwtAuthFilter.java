@@ -18,29 +18,28 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
-
     @Autowired
     private JwtService jwtService;
-
     @Autowired
-    private CustomUserDetailService customUserDetailService;
-
+    private CustomUserDetailService userDetailsService;
 
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
+        String token = jwtService.getJWTFromRequest(request);
 
-        final String token = jwtService.getJWTFromRequest(request);
-
-        if(jwtService.validateToken(token) && StringUtils.hasText(token)){
-            String userName = jwtService.getUsernameFromToken(token);
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(userName);
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+        if (StringUtils.hasText(token)
+                && jwtService.validateToken(token)) {
+            String username = jwtService.getUsernameFromToken(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
+
     }
+
 }

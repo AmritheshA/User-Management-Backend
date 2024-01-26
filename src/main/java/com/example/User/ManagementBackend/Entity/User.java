@@ -33,5 +33,5 @@ public class User {
 
     private Roles role;
 
-    private String profileImageUrl;
+    private String profileImageUrl = "https://cdn.pixabay.com/photo/2023/09/22/12/18/profile-8268938_640.png"   ;
 }

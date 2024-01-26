@@ -44,7 +44,7 @@ public class AdminController {
         }
 
         userService.saveUser(userDto);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully Added", HttpStatus.OK);
     }
 
     //    Remove user
@@ -61,22 +61,17 @@ public class AdminController {
     }
 
     // Edit user
-    @PutMapping("/edit-user")
-    public ResponseEntity<?> editUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
+    @GetMapping("/edit-user")
 
-        User user = userService.findByEmail(userDto.getEmail());
+    public ResponseEntity<?> editUser( @RequestParam("username") String newName,@RequestParam("email") String email) {
 
-        log.info("error status" + result.hasErrors());
+        User user = userService.findByEmail(email);
 
         if (user == null) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        if (result.hasErrors()) {
-            return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-
-        userService.editUser(userDto, user);
+        userService.editUser(newName, user);
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
